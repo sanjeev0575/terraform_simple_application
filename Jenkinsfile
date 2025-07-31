@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        it branch: 'main', credentialsId: 'git credentials', url: 'https://github.com/sanjeev0575/terraform_simple_application.git'
+        git branch: 'main', credentialsId: 'git credentials', url: 'https://github.com/sanjeev0575/terraform_simple_application.git'
       }
     }
 

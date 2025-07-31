@@ -4,7 +4,7 @@ pipeline {
   environment {
     AWS_ACCOUNT_ID = '115456585578'
     AWS_REGION     = 'us-east-1'
-    ECR_REPO       = 'my-app'
+    ECR_REPO       = 'my-simple-application'
     IMAGE_TAG      = 'latest'
   }
 
@@ -33,11 +33,16 @@ pipeline {
 
     stage('Push to ECR') {
       steps {
+        withCredentials([aws(
+          credentialsId: 'aws-cred',
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        )]) {
         sh """
           docker tag ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}
         """
-      }
+      } }
     }
 
     stage('Terraform Deploy') {

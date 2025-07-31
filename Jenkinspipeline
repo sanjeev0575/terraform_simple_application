@@ -42,13 +42,10 @@ pipeline {
 
     stage('Terraform Deploy') {
       steps {
-        dir('infra') {
-          withEnv(["TF_VAR_aws_region=${AWS_REGION}", "TF_VAR_ecr_repo=${ECR_REPO}"]) {
             sh 'terraform init'
             sh 'terraform apply -auto-approve'
-          }
+          
         }
       }
     }
   }
-}
